@@ -1,0 +1,33 @@
+R 2000 2000
+NO ./textures/test3
+SO ./textures/test3
+EA ./textures/test3
+S ./textures/st1
+S1 ./textures/st2
+S2 ./textures/st3
+S3 ./textures/st4
+S4 ./textures/st5
+S5 ./textures/st6
+TR ./textures/chr2
+PR ./textures/PR
+PT ./textures/PF
+NT ./textures/PF
+FL ./textures/wall
+EG ./textures/eog
+WE ./textures/test3
+NG ./textures/anime
+
+NEXTLEVEL ./maps/tim.1.cub
+
+C 30,  30, 30
+F 100 , 100 , 100
+
+
+
+
+
+1111111111111111111111111
+1000000000020020000000031
+1011000001110000000200001
+10N1200001020200000000001
+1111111111111111111111111
