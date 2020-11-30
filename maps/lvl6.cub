@@ -1,0 +1,22 @@
+R 750 750
+NO ./textures/bluestone
+SO ./textures/bluestone
+EA ./textures/bluestone
+WE ./textures/bluestone
+S ./textures/st1
+FL ./textures/cobblest
+EG ./textures/eog
+
+NEXTLEVEL ./maps/lvl7.cub
+
+C 30,  30, 30
+
+
+
+
+
+1111111
+1000031
+1010001
+10N0001
+111111

@@ -6,7 +6,7 @@
 /*   By: hleilani <hleilani@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/11/20 14:53:54 by hleilani          #+#    #+#             */
-/*   Updated: 2020/11/30 19:23:53 by hleilani         ###   ########.fr       */
+/*   Updated: 2020/11/30 20:18:31 by hleilani         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -87,29 +87,8 @@ void	posttextdata(t_all *a)
 
 int		ft_inserttextdata(t_all *a)
 {
-	int		i;
-	int		fd;
-	int		*t1;
-	int		*t2;
-	void	*t;
-
-	i = 0;
 	settexture(a);
-	while (i < 18)
-	{
-		t1 = &a->tex[i].width;
-		t2 = &a->tex[i].height;
-		if ((fd = open(a->tex[i].texfilename, O_RDONLY)) < 0)
-			ft_throwerror("Missing texture, or can't open it");
-		close(fd);
-		t = mlx_xpm_file_to_image(a->data.mlx, a->tex[i].texfilename, t1, t2);
-		a->tex[i].img = t;
-		t1 = &(a->tex[i].bpp);
-		t2 = &(a->tex[i].line_len);
-		t = mlx_get_data_addr(a->tex[i].img, t1, t2, &(a->tex[i].endian));
-		a->tex[i].addr = t;
-		i++;
-	}
+	updatedefaulttextures(a);
 	posttextdata(a);
 	return (1);
 }

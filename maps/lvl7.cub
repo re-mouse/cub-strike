@@ -1,0 +1,20 @@
+R 750 750
+NO ./textures/test1
+SO ./textures/test1
+EA ./textures/test1
+WE ./textures/test1
+S ./textures/st1
+FL ./textures/wall
+EG ./textures/eog
+
+C 30,  30, 30
+
+
+
+
+
+1111111111111111111111111
+1000000000020020000000031
+1011000001110000000200001
+10N1200001020200000000001
+1111111111111111111111111

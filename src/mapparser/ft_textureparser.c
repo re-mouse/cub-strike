@@ -6,7 +6,7 @@
 /*   By: hleilani <hleilani@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/11/30 19:23:15 by hleilani          #+#    #+#             */
-/*   Updated: 2020/11/30 19:26:37 by hleilani         ###   ########.fr       */
+/*   Updated: 2020/11/30 20:19:06 by hleilani         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -104,5 +104,31 @@ void	ft_fillmap(t_all *all, char *line, int fd)
 			all->map[i++] = ft_strdup(line);
 			free(line);
 		}
+	}
+}
+
+void	updatedefaulttextures(t_all *a)
+{
+	int		i;
+	int		*t1;
+	int		*t2;
+	void	*t;
+	int		fd;
+
+	i = 0;
+	while (i < 18)
+	{
+		t1 = &a->tex[i].width;
+		t2 = &a->tex[i].height;
+		if ((fd = open(a->tex[i].texfilename, O_RDONLY)) < 0)
+			ft_throwerror("Missing texture, or can't open it");
+		close(fd);
+		t = mlx_xpm_file_to_image(a->data.mlx, a->tex[i].texfilename, t1, t2);
+		a->tex[i].img = t;
+		t1 = &(a->tex[i].bpp);
+		t2 = &(a->tex[i].line_len);
+		t = mlx_get_data_addr(a->tex[i].img, t1, t2, &(a->tex[i].endian));
+		a->tex[i].addr = t;
+		i++;
 	}
 }

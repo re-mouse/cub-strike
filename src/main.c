@@ -6,7 +6,7 @@
 /*   By: hleilani <hleilani@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/11/13 18:03:57 by hleilani          #+#    #+#             */
-/*   Updated: 2020/11/30 19:40:18 by hleilani         ###   ########.fr       */
+/*   Updated: 2020/11/30 20:30:39 by hleilani         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,7 +53,8 @@ void	checkargs(int argc, char **argv)
 		ft_throwerror("No map argument error");
 	if (argc > 2)
 	{
-		if (!ft_strncmp(argv[2], "host", 5) || !ft_strncmp(argv[2], "client", 7))
+		if (!ft_strncmp(argv[2], "host", 5)
+		|| !ft_strncmp(argv[2], "client", 7))
 			return ;
 		else
 			ft_throwerror("Invalid second argument");
@@ -66,8 +67,7 @@ int		main(int argc, char **argv)
 	t_all	*a;
 
 	a = ft_calloc(1, sizeof(t_all));
-	if (argc < 2)
-		ft_throwerror("No map argument error");
+	argc < 2 ? ft_throwerror("No map argument error") : 0;
 	checkargs(argc, argv);
 	if (argc > 2 && !ft_strncmp(argv[2], "host", 5))
 	{

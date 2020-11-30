@@ -6,7 +6,7 @@
 /*   By: hleilani <hleilani@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/11/13 20:34:25 by hleilani          #+#    #+#             */
-/*   Updated: 2020/11/30 19:26:29 by hleilani         ###   ########.fr       */
+/*   Updated: 2020/11/30 20:18:14 by hleilani         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -82,8 +82,12 @@ void	allocate_map(t_all *all, char *map, int fd)
 	all->mapheight = count;
 	all->pl.psx = -1;
 	all->pl.psy = -1;
-	if (all->sprites == NULL)
-		all->sprites = ft_calloc(all->numsprites + 1, sizeof(t_sprite));
+	if (all->sprites != NULL)
+	{
+		free(all->sprites);
+		all->sprites = NULL;
+	}
+	all->sprites = ft_calloc(all->numsprites + 1, sizeof(t_sprite));
 }
 
 int		get_map(t_all *all, char *map)

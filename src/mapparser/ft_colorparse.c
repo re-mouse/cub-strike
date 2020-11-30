@@ -6,7 +6,7 @@
 /*   By: hleilani <hleilani@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/11/21 19:12:33 by hleilani          #+#    #+#             */
-/*   Updated: 2020/11/22 13:12:28 by hleilani         ###   ########.fr       */
+/*   Updated: 2020/11/30 20:00:00 by hleilani         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,7 +51,7 @@ int		ft_parse_color(char *l, t_all *all)
 	int		b;
 
 	temp = l;
-	if (*l != 'F' && *l != 'C')
+	if (*l != 'C')
 		return (0);
 	c = *l;
 	l += 2;
@@ -63,7 +63,5 @@ int		ft_parse_color(char *l, t_all *all)
 	l = ft_skipdigitspace_comma(l);
 	b = ft_atoi(l);
 	free(temp);
-	if (c == 'F')
-		return (ft_set_colors(r, g, b, &all->data.floor));
 	return (ft_set_colors(r, g, b, &all->data.cell));
 }

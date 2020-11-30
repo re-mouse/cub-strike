@@ -6,7 +6,7 @@
 /*   By: hleilani <hleilani@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/11/29 14:51:09 by hleilani          #+#    #+#             */
-/*   Updated: 2020/11/30 13:21:40 by hleilani         ###   ########.fr       */
+/*   Updated: 2020/11/30 20:19:43 by hleilani         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,10 @@ void	freedata(t_all *a)
 		free(a->map[i]);
 	i = -1;
 	while (a->tex[++i].texfilename != NULL)
-		free(a->tex[i].texfilename);
+	{
+		if (i < 5 || (i > 13 && i < 16 && i != 17))
+			free(a->tex[i].texfilename);
+	}
 	free(a->map);
 }
 
@@ -43,8 +46,8 @@ void	getnextlevel(t_all *a, int send)
 	}
 	freedata(a);
 	temp = a->nextmap;
-	ft_putendl_fd("Starting getting map", 1);
 	get_map(a, a->nextmap);
+	updatedefaulttextures(a);
 	a->mp.x = a->pl.psx;
 	a->mp.y = a->pl.psy;
 	free(temp);
