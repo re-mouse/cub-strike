@@ -4,12 +4,12 @@ SO ./textures/bluestone
 EA ./textures/bluestone
 WE ./textures/bluestone
 S ./textures/st1
-FL ./textures/cobblest
+FL ./textures/cobble
 EG ./textures/eog
 
 C 30,  30, 30
 
-NEXTLEVEL ./maps/lvl2.cub
+NEXTLEVEL ./maps/lvl3.cub
 
 111111111111111111111111111111
 1N0000102000000100002140000001

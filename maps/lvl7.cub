@@ -1,10 +1,10 @@
 R 750 750
-NO ./textures/test1
-SO ./textures/test1
-EA ./textures/test1
-WE ./textures/test1
+NO ./textures/brick
+SO ./textures/brick
+EA ./textures/brick
+WE ./textures/brick
 S ./textures/st1
-FL ./textures/wall
+FL ./textures/cobble
 EG ./textures/eog
 
 C 30,  30, 30

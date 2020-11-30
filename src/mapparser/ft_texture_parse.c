@@ -6,7 +6,7 @@
 /*   By: hleilani <hleilani@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/11/20 14:53:54 by hleilani          #+#    #+#             */
-/*   Updated: 2020/11/30 20:18:31 by hleilani         ###   ########.fr       */
+/*   Updated: 2020/11/30 20:33:15 by hleilani         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -67,7 +67,7 @@ void	ft_insertmult(t_all *a)
 		t1 = &a->tex[i].width;
 		t2 = &a->tex[i].height;
 		if ((fd = open(a->tex[i].texfilename, O_RDONLY)) < 0)
-			ft_throwerror("Missing numbers png");
+			ft_throwerror("Missing multiplayer png");
 		close(fd);
 		t = mlx_xpm_file_to_image(a->data.mlx, a->tex[i].texfilename, t1, t2);
 		a->tex[i].img = t;

@@ -6,7 +6,7 @@
 /*   By: hleilani <hleilani@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/11/30 19:23:15 by hleilani          #+#    #+#             */
-/*   Updated: 2020/11/30 20:19:06 by hleilani         ###   ########.fr       */
+/*   Updated: 2020/11/30 20:37:17 by hleilani         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,9 +47,9 @@ void	settexture(t_all *a)
 	a->tex[11].valide = 1;
 	a->tex[12].texfilename = "./textures/PF.xpm";
 	a->tex[12].valide = 1;
-	a->tex[13].texfilename = "./textures/wall.xpm";
+	a->tex[13].texfilename = "./textures/cobblest.xpm";
 	a->tex[13].valide = 1;
-	a->tex[16].texfilename = "./textures/test1.xpm";
+	a->tex[16].texfilename = "./textures/test3.xpm";
 	a->tex[16].valide = 1;
 	a->tex[17].texfilename = "./textures/hp.xpm";
 	a->tex[17].valide = 1;

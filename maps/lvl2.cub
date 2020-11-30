@@ -4,7 +4,7 @@ SO ./textures/animetyan
 EA ./textures/test3
 WE ./textures/anime
 S ./textures/st1
-FL ./textures/wall
+FL ./textures/cobble
 EG ./textures/eog
 
 C 30,  30, 30
