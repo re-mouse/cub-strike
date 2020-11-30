@@ -6,7 +6,7 @@
 /*   By: hleilani <hleilani@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/11/13 18:03:57 by hleilani          #+#    #+#             */
-/*   Updated: 2020/11/30 13:21:23 by hleilani         ###   ########.fr       */
+/*   Updated: 2020/11/30 19:40:18 by hleilani         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,6 +47,19 @@ void	firstintialization(t_all *a)
 	mlx_loop(a->data.mlx);
 }
 
+void	checkargs(int argc, char **argv)
+{
+	if (argc < 2)
+		ft_throwerror("No map argument error");
+	if (argc > 2)
+	{
+		if (!ft_strncmp(argv[2], "host", 5) || !ft_strncmp(argv[2], "client", 7))
+			return ;
+		else
+			ft_throwerror("Invalid second argument");
+	}
+}
+
 int		main(int argc, char **argv)
 {
 	char	**mapl;
@@ -55,14 +68,15 @@ int		main(int argc, char **argv)
 	a = ft_calloc(1, sizeof(t_all));
 	if (argc < 2)
 		ft_throwerror("No map argument error");
-	if (argc > 2 && !ft_strncmp(argv[2], "host", 4))
+	checkargs(argc, argv);
+	if (argc > 2 && !ft_strncmp(argv[2], "host", 5))
 	{
 		if (argc != 4)
 			ft_throwerror("Missing port");
 		a->port = ft_atoi(argv[3]);
 		createserver(a);
 	}
-	if (argc > 2 && !ft_strncmp(argv[2], "client", 6))
+	if (argc > 2 && !ft_strncmp(argv[2], "client", 7))
 	{
 		if (argc != 5)
 			ft_throwerror("Missing ip or port (ip first)");
