@@ -6,7 +6,7 @@
 /*   By: hleilani <hleilani@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/11/13 18:01:11 by hleilani          #+#    #+#             */
-/*   Updated: 2020/11/30 16:00:55 by hleilani         ###   ########.fr       */
+/*   Updated: 2020/11/30 19:32:54 by hleilani         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,8 +24,8 @@
 # include <arpa/inet.h>
 # include <netdb.h>
 
-#define SA struct sockaddr
-#define SI struct sockaddr_in
+# define SA struct sockaddr
+# define SI struct sockaddr_in
 
 typedef struct	s_raycast{
 	int			drmax;
@@ -279,5 +279,25 @@ void			killhealth(t_all *a, int x, int y);
 int				check(void);
 void			set_default(t_all *a);
 void			ft_throwerror(char *message);
+void			ft_movechar(t_all *a, int keycode, float ms);
+void			checkmoveside(t_all *a, float ms, float mult);
+void			checkmoveface(t_all *a, float ms, float mult);
+void			settexture(t_all *a);
+void			checkwhocandie(t_all *a);
+void			checkplhp(t_all *a);
+void			ft_fillmap(t_all *all, char *line, int fd);
+void			intializehud(t_all *a);
+void			checkcooldown(t_all *a, int i);
+int				ft_parse_texture(t_all *a, char *l);
+void			setupspritecycle(t_all *a, t_sprite sprite);
+void			spritecyclesec(t_all *a, int i);
+void			drawspritecycle(t_all *a, int i);
+void			calculatesprites(t_all *a);
+int				throwspriteraycast(t_all *a, t_sprite *spr);
+void			ft_setdefault(t_all *a, int x);
+void			ft_intializedirview(t_all *a);
+void			ft_findrange(t_all *a);
+void			ft_fill_drawparametrs(t_all *a);
+void			sortsprites(t_all *a);
 
 #endif

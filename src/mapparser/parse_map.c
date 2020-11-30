@@ -6,18 +6,46 @@
 /*   By: hleilani <hleilani@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/11/13 20:34:25 by hleilani          #+#    #+#             */
-/*   Updated: 2020/11/30 16:36:39 by hleilani         ###   ########.fr       */
+/*   Updated: 2020/11/30 19:26:29 by hleilani         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../inc/ft_cub.h"
+
+void	countmaplinesfunc(t_all *a, int fd, int *i)
+{
+	char *line;
+	char *temp;
+
+	while (get_next_line(fd, &line) > 0)
+	{
+		*i += 1;
+		temp = line;
+		if (!is_map(line))
+			ft_throwerror("Wrong chars in map");
+		while (*line)
+		{
+			(*line == '2' || *line == '4') && *line ? a->numsprites++ : 0;
+			line++;
+		}
+		free(temp);
+	}
+	temp = line;
+	!is_map(line) ? ft_throwerror("Wrong chars in map") : 0;
+	while (*line)
+	{
+		(*line == '2' || *line == '4') && *line ? a->numsprites++ : 0;
+		line++;
+	}
+	free(temp);
+	*i += 1;
+}
 
 int		count_maplines(char *map, t_all *a)
 {
 	int		i;
 	int		fd;
 	char	*line;
-	char	*temp;
 
 	i = 0;
 	fd = open(map, O_RDONLY);
@@ -27,58 +55,10 @@ int		count_maplines(char *map, t_all *a)
 	{
 		i++;
 		free(line);
-		while (get_next_line(fd, &line) > 0)
-		{
-			i++;
-			temp = line;
-			if (!is_map(line))
-				ft_throwerror("Wrong chars in map");
-			while (*line)
-			{
-				(*line == '2' || *line == '4') && *line ? a->numsprites++ : 0;
-				line++;
-			}
-			free(temp);
-		}
-		temp = line;
-		!is_map(line) ? ft_throwerror("Wrong chars in map") : 0;
-		while (*line)
-		{
-			(*line == '2' || *line == '4') && *line ? a->numsprites++ : 0;
-			line++;
-		}
-		free(temp);
-		i++;
+		countmaplinesfunc(a, fd, &i);
 	}
 	close(fd);
 	return (i);
-}
-
-void	ft_fillmap(t_all *all, char *line, int fd)
-{
-	int i;
-	int res;
-
-	i = 0;
-	if (is_map(line))
-	{
-		all->map[i++] = ft_strdup(line);
-		free(line);
-		while ((res = get_next_line(fd, &line)) > 0)
-		{
-			if (!is_map(line))
-				ft_throwerror("Unvaliable map error");
-			all->map[i++] = ft_strdup(line);
-			free(line);
-		}
-		if (res == 0)
-		{
-			if (!is_map(line))
-				ft_throwerror("Unvaliable map error");
-			all->map[i++] = ft_strdup(line);
-			free(line);
-		}
-	}
 }
 
 int		isthisnextmap(t_all *a, char *l)
@@ -117,13 +97,9 @@ int		get_map(t_all *all, char *map)
 	allocate_map(all, map, fd);
 	while (get_next_line(fd, &line) > 0 && !is_map(line))
 	{
-		if (parse_resolution(all, line))
+		if (parse_resolution(all, line) || ft_parse_texture(all, line))
 			continue ;
-		else if (ft_parse_texture(all, line))
-			continue ;
-		else if (isthisnextmap(all, line))
-			continue ;
-		else if (ft_parse_color(line, all))
+		else if (isthisnextmap(all, line) || ft_parse_color(line, all))
 			continue ;
 		if (*line != '\0')
 			ft_throwerror("Unvaliable settings in map config");
