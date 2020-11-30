@@ -6,7 +6,7 @@
 /*   By: hleilani <hleilani@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/11/24 14:48:05 by hleilani          #+#    #+#             */
-/*   Updated: 2020/11/25 15:18:10 by hleilani         ###   ########.fr       */
+/*   Updated: 2020/11/30 16:01:52 by hleilani         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,12 +19,12 @@ void	drawscore(t_all *a)
 	char	*t;
 	char	*f;
 	int		i;
-	
+
 	i = 0;
 	t = ft_itoa(a->pl.score);
 	f = t;
 	while (*t)
-	{ 
+	{
 		a->score[i].x = (1 - ft_strlen(t) * 0.05);
 		a->score[i].y = 0;
 		a->score[i].percent = 0.05;
@@ -38,13 +38,18 @@ void	drawscore(t_all *a)
 
 void	drawlifebar(t_all *a)
 {
+	int x;
+	int xstart;
+	int xend;
+	int ystart;
+	int yend;
+
 	if (a->pl.health <= 0)
 		return ;
-	int x;
-	int xstart = a->w * 0.015;
-	int xend = a->w * 0.46 * (1.0 * a->pl.health / 100);
-	int ystart = a->h * 0.015;
-	int yend = a->h * 0.1;
+	xstart = a->w * 0.015;
+	xend = a->w * 0.46 * (1.0 * a->pl.health / 100);
+	ystart = a->h * 0.015;
+	yend = a->h * 0.1;
 	while (ystart < yend)
 	{
 		x = xstart;
@@ -56,34 +61,28 @@ void	drawlifebar(t_all *a)
 
 void	drawhudpart(t_hud h, t_all *a)
 {
-	float	x;
-	float	step;
-	int	color;
-	float	tx;
-	float	ty;
-
-	int xstart = h.x * a->w;
-	int	xend = h.percent * a->w + xstart;
+	a->hdr.xstart = h.x * a->w;
+	a->hdr.xend = h.percent * a->w + a->hdr.xstart;
 	h.percent *= 1.0 * a->tex[h.texid].height / a->tex[h.texid].width;
-	float ystart = h.y * a->h;
-	int yend = h.percent * a->h + ystart;
-	yend >= a->h ? yend = a-> h - 1 : 0;
-	step = 1.0 * a->tex[h.texid].width / (xend - xstart);
-	ty = 0;
-	while (ystart < yend)
+	a->hdr.ystart = h.y * a->h;
+	a->hdr.yend = h.percent * a->h + a->hdr.ystart;
+	a->hdr.yend >= a->h ? a->hdr.yend = a->h - 1 : 0;
+	a->hdr.step = 1.0 * a->tex[h.texid].width / (a->hdr.xend - a->hdr.xstart);
+	a->hdr.ty = 0;
+	while (a->hdr.ystart < a->hdr.yend)
 	{
-		x = xstart;
-		tx = 0;
-		while (x < xend)
+		a->hdr.x = a->hdr.xstart;
+		a->hdr.tx = 0;
+		while (a->hdr.x < a->hdr.xend)
 		{
-			a->tex[h.texid].texx = (int)tx;
-			color = ft_getcolor(ty, a->tex[h.texid]);
-			ft_putpixel(x, ystart, a, color);
-			tx += step;
-			x++;
+			a->tex[h.texid].texx = (int)a->hdr.tx;
+			a->hdr.color = ft_getcolor(a->hdr.ty, a->tex[h.texid]);
+			ft_putpixel(a->hdr.x, a->hdr.ystart, a, a->hdr.color);
+			a->hdr.tx += a->hdr.step;
+			a->hdr.x++;
 		}
-		ty += step;
-		ystart++;
+		a->hdr.ty += a->hdr.step;
+		a->hdr.ystart++;
 	}
 }
 

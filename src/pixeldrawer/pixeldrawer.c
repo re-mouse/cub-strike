@@ -6,7 +6,7 @@
 /*   By: hleilani <hleilani@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/11/19 16:40:51 by hleilani          #+#    #+#             */
-/*   Updated: 2020/11/24 17:46:13 by hleilani         ###   ########.fr       */
+/*   Updated: 2020/11/30 15:57:27 by hleilani         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,12 +48,11 @@ void		ft_verline(t_all *a, t_raycast r, t_texture t, t_draw dr)
 		t.wallx = a->pl.psx + r.pwl * r.rdx;
 	t.wallx -= floor((t.wallx));
 	t.texx = (int)(t.wallx * t.width);
-	if (r.side == 0 && r.rdx > 0)
-		t.texx = t.width - t.texx - 1;
-	if (r.side == 1 && r.rdy < 0)
-		t.texx = t.width - t.texx - 1;
+	r.side == 0 && r.rdx > 0 ? t.texx = t.width - t.texx - 1 : 0;
+	r.side == 1 && r.rdy < 0 ? t.texx = t.width - t.texx - 1 : 0;
 	t.step = 1.0 * t.height / dr.lineheight;
-	t.texpos = (dr.drawstart - (a->h / 2 + (a->h / 10) * (a->pl.dvy - 1)) + dr.lineheight / 2) * t.step;
+	t.texpos = (dr.drawstart - (a->h / 2 + (a->h / 10)
+	* (a->pl.dvy - 1)) + dr.lineheight / 2) * t.step;
 	y = dr.drawstart;
 	while (y < dr.drawend)
 	{
@@ -62,6 +61,35 @@ void		ft_verline(t_all *a, t_raycast r, t_texture t, t_draw dr)
 		color = ft_getcolor(ty, t);
 		ft_putpixel(a->dr.x, y, a, color);
 		y++;
+	}
+}
+
+void		drawfloor(t_all *a, int x)
+{
+	int			y;
+	t_texture	q;
+
+	q = a->tex[14];
+	y = a->dr.drawend;
+	while (++y < a->h)
+	{
+		a->fl.rdx0 = a->pl.dx - a->pl.planex;
+		a->fl.rdy0 = a->pl.dy - a->pl.planey;
+		a->fl.rdx1 = a->pl.dx + a->pl.planex;
+		a->fl.rdy1 = a->pl.dy + a->pl.planey;
+		a->fl.p = y - a->h / 2 - (a->h / 10) * (a->pl.dvy - 1);
+		a->fl.pz = 0.5 * a->h;
+		a->fl.rd = a->fl.pz / a->fl.p;
+		a->fl.fstx = a->fl.rd * (a->fl.rdx1 - a->fl.rdx0) / a->w;
+		a->fl.fsty = a->fl.rd * (a->fl.rdy1 - a->fl.rdy0) / a->w;
+		a->fl.fx = a->pl.psx + a->fl.rd * a->fl.rdx0 + a->fl.fstx * x;
+		a->fl.fy = a->pl.psy + a->fl.rd * a->fl.rdy0 + a->fl.fsty * x;
+		a->fl.cy = (int)(a->fl.fy);
+		a->fl.cx = (int)(a->fl.fx);
+		a->fl.ty = (int)(q.height * (a->fl.fy - a->fl.cy)) & (q.height - 1);
+		q.texx = (int)(q.width * (a->fl.fx - a->fl.cx)) & (q.width - 1);
+		a->fl.color = ft_getcolor(a->fl.ty, q);
+		ft_putpixel(x, y, a, a->fl.color);
 	}
 }
 
@@ -90,29 +118,5 @@ void		verline(t_all *a, int x)
 		ft_putpixel(x, y, a, a->data.cell);
 		y++;
 	}
-	t_texture q = a->tex[14];
-	y = a->dr.drawend;
-	while (++y < a->h)
-    {
-		float rayDirX0 = a->pl.dx - a->pl.planex;
-		float rayDirY0 = a->pl.dy - a->pl.planey;
-		float rayDirX1 = a->pl.dx + a->pl.planex;
-		float rayDirY1 = a->pl.dy + a->pl.planey;
-		int p = y - a->h / 2 - (a->h / 10) * (a->pl.dvy - 1);
-		float posZ = 0.5 * a->h;
-		float rowDistance = posZ / p;
-		float floorStepX = rowDistance * (rayDirX1 - rayDirX0) / a->w;
-		float floorStepY = rowDistance * (rayDirY1 - rayDirY0) / a->w;
-		float floorX = a->pl.psx + rowDistance * rayDirX0;
-		float floorY = a->pl.psy + rowDistance * rayDirY0;
-		floorY += floorStepY * x;
-		floorX += floorStepX * x;
-		int cellY = (int)(floorY);
-		int cellX = (int)(floorX);
-		int ty = (int)(q.height * (floorY - cellY)) & (q.height - 1);
-		q.texx = (int)(q.width * (floorX - cellX)) & (q.width - 1);
-		int color;
-		color = ft_getcolor(ty, q);
-		ft_putpixel(x, y, a, color);
-	}
+	drawfloor(a, x);
 }

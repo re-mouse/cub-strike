@@ -6,7 +6,7 @@
 /*   By: hleilani <hleilani@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/11/19 16:40:49 by hleilani          #+#    #+#             */
-/*   Updated: 2020/11/27 07:03:54 by hleilani         ###   ########.fr       */
+/*   Updated: 2020/11/30 13:20:59 by hleilani         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -137,7 +137,7 @@ int		throwspriteraycast(t_all *a, t_sprite *spr)
 		if (floor(y) == floor(a->pl.psy) && floor(x) == floor(a->pl.psx))
 		{
 			spr->seepl = 1;
-			return 0;
+			return (0);
 		}
 		if (a->map[(int)floor(x)][(int)floor(y)] == '1')
 		{
@@ -147,18 +147,135 @@ int		throwspriteraycast(t_all *a, t_sprite *spr)
 	}
 }
 
-void	castraycasts(t_all *a)
+void	setupspritecycle(t_all *a, t_sprite sprite)
+{
+	a->s.i = sprite.spritestate;
+	a->s.spx = sprite.x - a->pl.psx;
+	a->s.spy = sprite.y - a->pl.psy;
+	a->s.tsx = 2.0 * (a->pl.dy * a->s.spx - a->pl.dx * a->s.spy);
+	a->s.tsy = 2.0 * (-a->pl.planey * a->s.spx + a->pl.planex * a->s.spy);
+	a->s.scx = (int)((a->w / 2) * (1 + a->s.tsx / a->s.tsy));
+	a->s.sch = abs((int)(a->h / (a->s.tsy)));
+	a->s.dwy = -a->s.sch / 2 + a->h / 2 + (a->h / 10) * (a->pl.dvy - 1) + 2;
+	a->s.dwy < 0 ? a->s.dwy = 0 : 0;
+	a->s.dwey = a->s.sch / 2 + a->h / 2 + (a->h / 10) * (a->pl.dvy - 1);
+	a->s.dwey >= a->h ? a->s.dwey = a->h - 1 : 0;
+	a->s.sw = abs((int)(a->h / (a->s.tsy)));
+	a->s.dwsx = -a->s.sw / 2 + a->s.scx;
+	a->s.dwsx < 0 ? a->s.dwsx = 0 : 0;
+	a->s.dwsx >= a->w - 1 ? a->s.dwsx = a->w - 1 : 0;
+	a->s.dwex = a->s.sw / 2 + a->s.scx;
+	a->s.dwex >= a->w ? a->s.dwex = a->w - 1 : 0;
+	a->s.dwex < 0 ? a->s.dwex = 0 : 0;
+	a->s.x = a->s.dwsx;
+}
+
+void	spritecyclesec(t_all *a, int i)
+{
+	int		y;
+	int		texy;
+	float	d;
+	int		c;
+
+	if (a->s.tsy > 0 && a->s.x > 0 && a->s.x < a->w
+	&& a->s.tsy < a->distbuff[a->s.x])
+	{
+		y = a->s.dwy;
+		while (y < a->s.dwey)
+		{
+			d = (y - (a->h / 10) * (a->pl.dvy - 1)) * 2 - a->h + a->s.sch;
+			texy = ((d * a->tex[a->s.i].height) / a->s.sch) / 2;
+			c = ft_getcolor(texy, a->tex[a->s.i]);
+			if (y == a->h / 2 && a->s.x == a->w / 2 && !(c & 0xff000000))
+				a->sprites[i].candie = 1;
+			ft_putpixel(a->s.x, y, a, c);
+			y++;
+		}
+	}
+}
+
+void	drawspritecycle(t_all *a, int i)
+{
+	float	temp;
+
+	while (a->s.x < a->s.dwex)
+	{
+		temp = (a->s.x - (-a->s.sw / 2 + a->s.scx));
+		a->tex[a->s.i].texx = (int)(temp * a->tex[a->s.i].width / a->s.sw);
+		spritecyclesec(a, i);
+		a->s.x++;
+	}
+}
+
+void	calculatesprites(t_all *a)
+{
+	int		i;
+	float	second;
+	float	first;
+
+	i = -1;
+	while (++i < a->numsprites)
+	{
+		first = a->pl.psx - a->sprites[i].x;
+		second = a->pl.psy - a->sprites[i].y;
+		a->sprites[i].dist = (pow(first, 2) + pow(second, 2));
+	}
+	i = -1;
+	while (++i < a->numsprites)
+	{
+		if (!a->sprites[i].alive)
+			continue ;
+		a->sprites[i].candie = 0;
+		setupspritecycle(a, a->sprites[i]);
+		throwspriteraycast(a, &a->sprites[i]);
+		drawspritecycle(a, i);
+	}
+}
+
+int		prevalueprocess(t_all *a)
+{
+	a->tex[a->s.i].texx = (int)(1.0 * (a->s.x - (-a->s.sw / 2 + a->s.scx))
+	* a->tex[a->s.i].width / a->s.sw);
+	if (a->s.tsy > 0 && a->s.x > 0 && a->s.x < a->w
+	&& a->s.tsy < a->distbuff[a->s.x])
+		return (1);
+	return (0);
+}
+
+void	drawmultiplayer(t_all *a)
+{
+	int y;
+	int d;
+	int texy;
+	int color;
+
+	a->mp.candie = 0;
+	setupspritecycle(a, a->mp);
+	throwspriteraycast(a, &a->mp);
+	while (a->s.x < a->s.dwex)
+	{
+		if (prevalueprocess(a))
+		{
+			y = a->s.dwy;
+			while (y < a->s.dwey)
+			{
+				d = (y - (a->h / 10) * (a->pl.dvy - 1)) * 256
+				- a->h * 128 + a->s.sch * 128;
+				texy = ((d * a->tex[a->s.i].height) / a->s.sch) / 256;
+				color = ft_getcolor(texy, a->tex[a->s.i]);
+				ft_putpixel(a->s.x, y, a, color);
+				y++;
+			}
+		}
+		a->s.x++;
+	}
+}
+
+void	drawwalls(t_all *a)
 {
 	int x;
-	size_t	tmf;
-	size_t	tms;
 
 	x = 0;
-	tmf = a->resolution_width;
-	tms = a->resolution_height;
-	mlx_destroy_image(a->data.mlx, a->data.img);
-	a->data.img = mlx_new_image(a->data.mlx, tmf, tms);
-	ft_getdataaddr(a);
 	while (x < a->w)
 	{
 		ft_setdefault(a, x);
@@ -171,109 +288,22 @@ void	castraycasts(t_all *a)
 		verline(a, x);
 		x++;
 	}
+}
+
+void	castraycasts(t_all *a)
+{
+	size_t	tmf;
+	size_t	tms;
+
+	tmf = a->resolution_width;
+	tms = a->resolution_height;
+	mlx_destroy_image(a->data.mlx, a->data.img);
+	a->data.img = mlx_new_image(a->data.mlx, tmf, tms);
+	ft_getdataaddr(a);
+	drawwalls(a);
 	sortsprites(a);
-	for (int i = 0; i < a->numsprites; i++)
-	{
-		a->sprites[i].dist = ((a->pl.psx - a->sprites[i].x) * (a->pl.psx - a->sprites[i].x) + (a->pl.psy - a->sprites[i].y) * (a->pl.psy - a->sprites[i].y));
-	}
-	for(int i = 0; i < a->numsprites; i++)
-    {
-		if (!a->sprites[i].alive)
-			continue ;
-		int id = a->sprites[i].spritestate;
-		a->sprites[i].candie = 0;
-		double spriteX = a->sprites[i].x - a->pl.psx;
-		double spriteY = a->sprites[i].y - a->pl.psy;
-		double transformX = 2.0 * (a->pl.dy * spriteX - a->pl.dx * spriteY);
-		double transformY = 2.0 * (-a->pl.planey * spriteX + a->pl.planex * spriteY);
-		int spriteScreenX = (int)((a->w / 2) * (1 + transformX / transformY));
-		int spriteHeight = abs((int)(a->h / (transformY)));
-		int drawStartY = -spriteHeight / 2 + a->h / 2 + (a->h / 10) * (a->pl.dvy - 1) + 2;
-		if(drawStartY < 0)
-			drawStartY = 0;
-		int drawEndY = spriteHeight / 2 + a->h / 2 + (a->h / 10) * (a->pl.dvy - 1);
-		if(drawEndY >= a->h)
-			drawEndY = a->h - 1;
-		int spriteWidth = abs( (int) (a->h / (transformY)));
-		int drawStartX = -spriteWidth / 2 + spriteScreenX;
-		if(drawStartX < 0)
-			drawStartX = 0;
-		if(drawStartX >= a->w - 1)
-			drawStartX = a->w - 1;
-		int drawEndX = spriteWidth / 2 + spriteScreenX;
-		if(drawEndX >= a->w)
-			drawEndX = a->w - 1;
-		if(drawEndX < 0)
-			drawEndX = 0;
-		int stripe = drawStartX;
-		throwspriteraycast(a, &a->sprites[i]);
-		while (stripe < drawEndX)
-		{
-			a->tex[id].texx = (int)(1.0 * (stripe - (-spriteWidth / 2 + spriteScreenX)) * a->tex[id].width / spriteWidth);
-			if(transformY > 0 && stripe > 0 && stripe < a->w && transformY < a->distbuff[stripe])
-			{
-				int y = drawStartY;
-				while(y < drawEndY)
-				{
-					int d = (y - (a->h / 10) * (a->pl.dvy - 1)) * 256 - a->h * 128 + spriteHeight * 128;
-					int texY = ((d * a->tex[id].height) / spriteHeight) / 256;
-					int color = ft_getcolor(texY, a->tex[id]);
-					if (y == a->h / 2 && stripe == a->w / 2 && !(color & 0xff000000))
-						a->sprites[i].candie = 1;
-					ft_putpixel(stripe, y, a, color);
-					y++;
-				}
-			}
-			stripe++;
-		}
-	}
-	if (a->ismultiplayer && a->mp.alive)
-	{
-		int id = a->mp.spritestate;
-		a->mp.candie = 0;
-		double spriteX = a->mp.x - a->pl.psx;
-		double spriteY = a->mp.y - a->pl.psy;
-		double transformX = 2.0 * (a->pl.dy * spriteX - a->pl.dx * spriteY);
-		double transformY = 2.0 * (-a->pl.planey * spriteX + a->pl.planex * spriteY);
-		int spriteScreenX = (int)((a->w / 2) * (1 + transformX / transformY));
-		int spriteHeight = abs((int)(a->h / (transformY)));
-		int drawStartY = -spriteHeight / 2 + a->h / 2 + (a->h / 10) * (a->pl.dvy - 1) + 2;
-		if(drawStartY < 0)
-			drawStartY = 0;
-		int drawEndY = spriteHeight / 2 + a->h / 2 + (a->h / 10) * (a->pl.dvy - 1);
-		if(drawEndY >= a->h)
-			drawEndY = a->h - 1;
-		int spriteWidth = abs( (int) (a->h / (transformY)));
-		int drawStartX = -spriteWidth / 2 + spriteScreenX;
-		if(drawStartX < 0)
-			drawStartX = 0;
-		if(drawStartX >= a->w - 1)
-			drawStartX = a->w - 1;
-		int drawEndX = spriteWidth / 2 + spriteScreenX;
-		if(drawEndX >= a->w)
-			drawEndX = a->w - 1;
-		if(drawEndX < 0)
-			drawEndX = 0;
-		int stripe = drawStartX;
-		throwspriteraycast(a, &a->mp);
-		while (stripe < drawEndX)
-		{
-			a->tex[id].texx = (int)(1.0 * (stripe - (-spriteWidth / 2 + spriteScreenX)) * a->tex[id].width / spriteWidth);
-			if(transformY > 0 && stripe > 0 && stripe < a->w && transformY < a->distbuff[stripe])
-			{
-				int y = drawStartY;
-				while(y < drawEndY)
-				{
-					int d = (y - (a->h / 10) * (a->pl.dvy - 1)) * 256 - a->h * 128 + spriteHeight * 128;
-					int texY = ((d * a->tex[id].height) / spriteHeight) / 256;
-					int color = ft_getcolor(texY, a->tex[id]);
-					ft_putpixel(stripe, y, a, color);
-					y++;
-				}
-			}
-			stripe++;
-		}
-	}
+	calculatesprites(a);
+	a->ismultiplayer && a->mp.alive ? drawmultiplayer(a) : 0;
 	drawhud(a);
 	mlx_put_image_to_window(a->data.mlx, a->data.win, (a->data).img, 0, 0);
 	a->calc = 0;

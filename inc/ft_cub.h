@@ -6,7 +6,7 @@
 /*   By: hleilani <hleilani@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/11/13 18:01:11 by hleilani          #+#    #+#             */
-/*   Updated: 2020/11/27 06:49:09 by hleilani         ###   ########.fr       */
+/*   Updated: 2020/11/30 16:00:55 by hleilani         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -110,6 +110,38 @@ typedef struct	s_draw {
 	int			drstt;
 }				t_draw;
 
+typedef struct	s_floor
+{
+	float		rdx0;
+	float		rdy0;
+	float		rdx1;
+	float		rdy1;
+	int			p;
+	float		pz;
+	float		rd;
+	float		fstx;
+	float		fsty;
+	float		fx;
+	float		fy;
+	int			cx;
+	int			cy;
+	float		ty;
+	int			color;
+}				t_floor;
+
+typedef struct	s_huddraw
+{
+	float		x;
+	float		step;
+	int			color;
+	float		tx;
+	float		ty;
+	int			xstart;
+	int			xend;
+	float		ystart;
+	int			yend;
+}				t_huddraw;
+
 typedef struct	s_control
 {
 	int			side_pressed[4];
@@ -146,8 +178,26 @@ typedef struct	s_hud
 	int			dontdraw;
 }				t_hud;
 
+typedef struct	s_sprtedraw
+{
+	int		i;
+	float	spx;
+	float	spy;
+	float	tsx;
+	float	tsy;
+	int		scx;
+	int		sch;
+	int		dwy;
+	int		dwey;
+	int		sw;
+	int		dwsx;
+	int		dwex;
+	int		x;
+}				t_sprtedraw;
+
 typedef struct	s_all
 {
+	t_sprtedraw	s;
 	int			nextlvltriger;
 	int			ismultiplayer;
 	int			calc;
@@ -163,6 +213,7 @@ typedef struct	s_all
 	t_data		data;
 	int			h;
 	int			w;
+	t_floor		fl;
 	t_control	ctrl;
 	t_pl		pl;
 	t_raycast	r;
@@ -174,6 +225,7 @@ typedef struct	s_all
 	t_sprite	*sprites;
 	t_hud		hudpart[4];
 	t_hud		score[10];
+	t_huddraw	hdr;
 	int			numsprites;
 	int			calculating;
 	char		*nextmap;
@@ -224,5 +276,8 @@ void			postmultiplayer(t_all *a);
 void			recievepacket(t_all *a);
 void			gethp(t_all *a);
 void			killhealth(t_all *a, int x, int y);
+int				check(void);
+void			set_default(t_all *a);
+void			ft_throwerror(char *message);
 
 #endif

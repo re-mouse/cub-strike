@@ -6,7 +6,7 @@
 /*   By: hleilani <hleilani@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/11/20 14:53:54 by hleilani          #+#    #+#             */
-/*   Updated: 2020/11/27 06:40:33 by hleilani         ###   ########.fr       */
+/*   Updated: 2020/11/30 16:35:10 by hleilani         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,6 +29,32 @@ void	intializehud(t_all *a)
 	a->hudpart[2].dontdraw = 1;
 }
 
+void	settexture(t_all *a)
+{
+	a->tex[5].texfilename = "./textures/st2.xpm";
+	a->tex[5].valide = 1;
+	a->tex[6].texfilename = "./textures/st3.xpm";
+	a->tex[6].valide = 1;
+	a->tex[7].texfilename = "./textures/st4.xpm";
+	a->tex[7].valide = 1;
+	a->tex[8].texfilename = "./textures/st5.xpm";
+	a->tex[8].valide = 1;
+	a->tex[9].texfilename = "./textures/st6.xpm";
+	a->tex[9].valide = 1;
+	a->tex[10].texfilename = "./textures/chr2.xpm";
+	a->tex[10].valide = 1;
+	a->tex[11].texfilename = "./textures/PR.xpm";
+	a->tex[11].valide = 1;
+	a->tex[12].texfilename = "./textures/PF.xpm";
+	a->tex[12].valide = 1;
+	a->tex[13].texfilename = "./textures/wall.xpm";
+	a->tex[13].valide = 1;
+	a->tex[16].texfilename = "./textures/test1.xpm";
+	a->tex[16].valide = 1;
+	a->tex[17].texfilename = "./textures/hp.xpm";
+	a->tex[17].valide = 1;
+}
+
 int		ft_parse_texture(t_all *a, char *l)
 {
 	int		i;
@@ -36,43 +62,14 @@ int		ft_parse_texture(t_all *a, char *l)
 
 	temp = l;
 	i = -1;
-	if (ft_strncmp(l, "NO", 2) == 0)
-		i = 0;
-	else if (ft_strncmp(l, "SO", 2) == 0)
-		i = 1;
-	else if (ft_strncmp(l, "WE", 2) == 0)
-		i = 2;
-	else if (ft_strncmp(l, "EA", 2) == 0)
-		i = 3;
-	else if (ft_strncmp(l, "S ", 2) == 0)
-		i = 4;
-	else if (ft_strncmp(l, "S1", 2) == 0)
-		i = 5;
-	else if (ft_strncmp(l, "S2", 2) == 0)
-		i = 6;
-	else if (ft_strncmp(l, "S3", 2) == 0)
-		i = 7;
-	else if (ft_strncmp(l, "S4", 2) == 0)
-		i = 8;
-	else if (ft_strncmp(l, "S5", 2) == 0)
-		i = 9;
-	else if (ft_strncmp(l, "TR", 2) == 0)
-		i = 10;
-	else if (ft_strncmp(l, "PR", 2) == 0)
-		i = 11;
-	else if (ft_strncmp(l, "PT", 2) == 0)
-		i = 12;
-	else if (ft_strncmp(l, "NT", 2) == 0)
-		i = 13;
-	else if (ft_strncmp(l, "FL", 2) == 0)
-		i = 14;
-	else if (ft_strncmp(l, "EG", 2) == 0)
-		i = 15;
-	else if (ft_strncmp(l, "NG", 2) == 0)
-		i = 16;
-	else if (ft_strncmp(l, "HP", 2) == 0)
-		i = 17;
-	else
+	ft_strncmp(l, "NO ", 3) == 0 ? i = 0 : 0;
+	ft_strncmp(l, "SO ", 3) == 0 ? i = 1 : 0;
+	ft_strncmp(l, "WE ", 3) == 0 ? i = 2 : 0;
+	ft_strncmp(l, "EA ", 3) == 0 ? i = 3 : 0;
+	ft_strncmp(l, "S ", 2) == 0 ? i = 4 : 0;
+	ft_strncmp(l, "FL ", 3) == 0 ? i = 14 : 0;
+	ft_strncmp(l, "EG ", 3) == 0 ? i = 15 : 0;
+	if (i == -1)
 		return (0);
 	l += 2;
 	while (*l == ' ')
@@ -83,23 +80,32 @@ int		ft_parse_texture(t_all *a, char *l)
 	return (1);
 }
 
+char	*createpath(int i, char *path)
+{
+	char *t;
+	char *t3;
+	char *nt;
+
+	t = ft_itoa(i);
+	t3 = ft_strjoin(path, t);
+	free(t);
+	nt = ft_strjoin(t3, ".xpm");
+	free(t3);
+	return (nt);
+}
+
 void	ft_insertnumbers(t_all *a)
 {
 	int		*t1;
 	int		*t2;
 	void	*t;
 	int		fd;
-	char	*t3;
-	int i;
+	int		i;
 
 	i = 19;
 	while (++i < 30)
 	{
-		t = ft_itoa(i - 20);
-		t3 = ft_strjoin("./cifri/", t);
-		free(t);
-		a->tex[i].texfilename = ft_strjoin(t3, ".xpm");
-		free(t3);
+		a->tex[i].texfilename = createpath(i - 20, "./cifri/");
 		t1 = &a->tex[i].width;
 		t2 = &a->tex[i].height;
 		if ((fd = open(a->tex[i].texfilename, O_RDONLY)) < 0)
@@ -120,17 +126,12 @@ void	ft_insertmult(t_all *a)
 	int		*t2;
 	void	*t;
 	int		fd;
-	char	*t3;
-	int i;
+	int		i;
 
 	i = 29;
 	while (++i < 36)
 	{
-		t = ft_itoa(i - 30);
-		t3 = ft_strjoin("./mult/", t);
-		free(t);
-		a->tex[i].texfilename = ft_strjoin(t3, ".xpm");
-		free(t3);
+		a->tex[i].texfilename = createpath(i - 30, "./mult/");
 		t1 = &a->tex[i].width;
 		t2 = &a->tex[i].height;
 		if ((fd = open(a->tex[i].texfilename, O_RDONLY)) < 0)
@@ -145,6 +146,13 @@ void	ft_insertmult(t_all *a)
 	}
 }
 
+void	posttextdata(t_all *a)
+{
+	ft_insertnumbers(a);
+	ft_insertmult(a);
+	intializehud(a);
+}
+
 int		ft_inserttextdata(t_all *a)
 {
 	int		i;
@@ -154,6 +162,7 @@ int		ft_inserttextdata(t_all *a)
 	void	*t;
 
 	i = 0;
+	settexture(a);
 	while (i < 18)
 	{
 		t1 = &a->tex[i].width;
@@ -169,8 +178,6 @@ int		ft_inserttextdata(t_all *a)
 		a->tex[i].addr = t;
 		i++;
 	}
-	ft_insertnumbers(a);
-	ft_insertmult(a);
-	intializehud(a);
+	posttextdata(a);
 	return (1);
 }

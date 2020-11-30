@@ -6,7 +6,7 @@
 /*   By: hleilani <hleilani@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/11/26 12:17:19 by hleilani          #+#    #+#             */
-/*   Updated: 2020/11/27 07:12:35 by hleilani         ###   ########.fr       */
+/*   Updated: 2020/11/30 16:05:54 by hleilani         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,10 +35,8 @@ void	createserver(t_all *a)
 	postmultiplayer(a);
 }
 
-void	sendpacket(t_all *a)
+void	sendnextlvl(t_all *a)
 {
-	int i;
-
 	write(a->sockfd, &a->healtheated, sizeof(int));
 	if (a->healtheated)
 	{
@@ -56,9 +54,16 @@ void	sendpacket(t_all *a)
 		a->nextlvltriger = 0;
 		a->alivesended = 1;
 	}
+}
+
+void	sendpacket(t_all *a)
+{
+	int i;
+
+	sendnextlvl(a);
 	i = 0;
 	a->pl.angle = 57.2958 * atan2(a->pl.dx, a->pl.dy);
-	a->pl.angle < 0 ? a->pl.angle += 360: 0;
+	a->pl.angle < 0 ? a->pl.angle += 360 : 0;
 	write(a->sockfd, &a->pl.angle, sizeof(int));
 	write(a->sockfd, &a->pl.psx, sizeof(float));
 	write(a->sockfd, &a->pl.psy, sizeof(float));
@@ -69,7 +74,7 @@ void	sendpacket(t_all *a)
 			if (a->sprites[i].deadsended == 1)
 			{
 				write(a->sockfd, &a->sprites[i].unicid, sizeof(int));
-				a->sprites[i].deadsended = 0;		
+				a->sprites[i].deadsended = 0;
 			}
 			i++;
 		}
@@ -92,11 +97,8 @@ void	killunicid(t_all *a, int id)
 	}
 }
 
-void	recievepacket(t_all *a)
+void	updatehealthandnextlvl(t_all *a)
 {
-	int i;
-	int diff;
-	int	deads;
 	int	nextlvl;
 	int	healtheated;
 
@@ -114,9 +116,23 @@ void	recievepacket(t_all *a)
 	{
 		getnextlevel(a, 0);
 	}
+}
+
+void	updateplayervariables(t_all *a)
+{
 	read(a->sockfd, &a->mp.angle, sizeof(int));
 	read(a->sockfd, &a->mp.x, sizeof(float));
 	read(a->sockfd, &a->mp.y, sizeof(float));
+}
+
+void	recievepacket(t_all *a)
+{
+	int i;
+	int diff;
+	int	deads;
+
+	updatehealthandnextlvl(a);
+	updateplayervariables(a);
 	deads = 0;
 	read(a->sockfd, &deads, sizeof(int));
 	while (deads > 0)

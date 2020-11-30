@@ -6,7 +6,7 @@
 /*   By: hleilani <hleilani@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/11/24 12:15:04 by hleilani          #+#    #+#             */
-/*   Updated: 2020/11/27 07:30:18 by hleilani         ###   ########.fr       */
+/*   Updated: 2020/11/30 16:08:10 by hleilani         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,7 +41,6 @@ void	killhealth(t_all *a, int x, int y)
 void	checkwhocandie(t_all *a)
 {
 	int i;
-	int pid;
 
 	i = -1;
 	if (a->pl.shootcd <= 0)
@@ -57,8 +56,6 @@ void	checkwhocandie(t_all *a)
 			}
 		a->hudpart[1].texid = 12;
 		a->pl.shootcd = 1;
-		pid = fork();
-		(pid == 0) ? system("afplay ./sound/shoot.wav -v 1") : 0;
 	}
 }
 
@@ -70,14 +67,11 @@ void	checkplhp(t_all *a)
 
 void	checkcooldown(t_all *a, int i)
 {
-	int pid;
 	a->sprites[i].spritestate = 5;
 	if (a->sprites[i].shootcd <= 0)
 	{
 		a->sprites[i].shootcd = 2;
 		a->sprites[i].spritestate = 6;
-		pid = fork();
-		(pid == 0) ? system("afplay ./sound/shoot.wav -v 0.5") : 0;
 		a->pl.health -= 5;
 		checkplhp(a);
 	}
@@ -96,16 +90,15 @@ void	proccesdying(t_all *a, int i)
 
 void	processmoblogic(t_all *a)
 {
-	time_t timer;
-	int i;
+	time_t	timer;
+	int		i;
 
 	i = -1;
 	timer = time(NULL);
 	if (a->prev != timer)
 	{
 		a->pl.shootcd--;
-		if (a->pl.shootcd <= 0)
-			a->hudpart[1].texid = 11;
+		a->pl.shootcd <= 0 ? a->hudpart[1].texid = 11 : 0;
 		while (++i < a->numsprites)
 		{
 			if (!a->sprites[i].alive)
@@ -117,8 +110,7 @@ void	processmoblogic(t_all *a)
 			}
 			a->sprites[i].shootcd--;
 			a->sprites[i].spritestate = 4;
-			if (a->sprites[i].seepl)
-				checkcooldown(a, i);
+			a->sprites[i].seepl ? checkcooldown(a, i) : 0;
 		}
 	}
 	a->prev = timer;

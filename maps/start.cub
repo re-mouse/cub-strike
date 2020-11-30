@@ -2,21 +2,10 @@ R 750 750
 NO ./textures/test2
 SO ./textures/test2
 EA ./textures/test2
+WE ./textures/test2
 S ./textures/st1
-S1 ./textures/st2
-S2 ./textures/st3
-S3 ./textures/st4
-S4 ./textures/st5
-S5 ./textures/st6
-TR ./textures/chr2
-PR ./textures/PR
-PT ./textures/PF
-NT ./textures/PF
 FL ./textures/wall
 EG ./textures/eog
-WE ./textures/test2
-NG ./textures/test1
-HP ./textures/hp
 
 NEXTLEVEL ./maps/tim.cub
 

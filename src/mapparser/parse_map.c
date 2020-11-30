@@ -6,7 +6,7 @@
 /*   By: hleilani <hleilani@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/11/13 20:34:25 by hleilani          #+#    #+#             */
-/*   Updated: 2020/11/27 06:58:24 by hleilani         ###   ########.fr       */
+/*   Updated: 2020/11/30 16:36:39 by hleilani         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,19 +35,16 @@ int		count_maplines(char *map, t_all *a)
 				ft_throwerror("Wrong chars in map");
 			while (*line)
 			{
-				if ((*line == '2' || *line == '4') && *line)
-					a->numsprites++;
+				(*line == '2' || *line == '4') && *line ? a->numsprites++ : 0;
 				line++;
 			}
 			free(temp);
 		}
 		temp = line;
-		if (!is_map(line))
-			ft_throwerror("Wrong chars in map");
+		!is_map(line) ? ft_throwerror("Wrong chars in map") : 0;
 		while (*line)
 		{
-			if ((*line == '2' || *line == '4') && *line)
-				a->numsprites++;
+			(*line == '2' || *line == '4') && *line ? a->numsprites++ : 0;
 			line++;
 		}
 		free(temp);
