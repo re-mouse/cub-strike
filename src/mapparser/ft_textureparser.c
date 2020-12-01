@@ -6,7 +6,7 @@
 /*   By: hleilani <hleilani@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/11/30 19:23:15 by hleilani          #+#    #+#             */
-/*   Updated: 2020/11/30 20:37:17 by hleilani         ###   ########.fr       */
+/*   Updated: 2020/12/01 12:38:45 by hleilani         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,8 +49,6 @@ void	settexture(t_all *a)
 	a->tex[12].valide = 1;
 	a->tex[13].texfilename = "./textures/cobblest.xpm";
 	a->tex[13].valide = 1;
-	a->tex[16].texfilename = "./textures/test3.xpm";
-	a->tex[16].valide = 1;
 	a->tex[17].texfilename = "./textures/hp.xpm";
 	a->tex[17].valide = 1;
 }
@@ -69,6 +67,7 @@ int		ft_parse_texture(t_all *a, char *l)
 	ft_strncmp(l, "S ", 2) == 0 ? i = 4 : 0;
 	ft_strncmp(l, "FL ", 3) == 0 ? i = 14 : 0;
 	ft_strncmp(l, "EG ", 3) == 0 ? i = 15 : 0;
+	ft_strncmp(l, "NG ", 3) == 0 ? i = 16 : 0;
 	if (i == -1)
 		return (0);
 	l += 2;

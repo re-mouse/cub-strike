@@ -6,7 +6,7 @@
 /*   By: hleilani <hleilani@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/11/19 16:40:55 by hleilani          #+#    #+#             */
-/*   Updated: 2020/11/30 19:22:42 by hleilani         ###   ########.fr       */
+/*   Updated: 2020/12/01 16:20:18 by hleilani         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -84,5 +84,7 @@ int		hook(t_all *a)
 		mlx_mouse_move(a->data.win, a->maxresx, a->maxresy / 2);
 	}
 	posthook(a, x, y);
+	a->screen > 0 ? a->screen-- : 0;
+	a->screen == 1 ? takescreenshot(a) : 0;
 	return (1);
 }

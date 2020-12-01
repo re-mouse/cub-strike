@@ -6,7 +6,7 @@
 /*   By: hleilani <hleilani@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/11/13 18:03:57 by hleilani          #+#    #+#             */
-/*   Updated: 2020/11/30 20:30:39 by hleilani         ###   ########.fr       */
+/*   Updated: 2020/12/01 17:01:45 by hleilani         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,7 +54,8 @@ void	checkargs(int argc, char **argv)
 	if (argc > 2)
 	{
 		if (!ft_strncmp(argv[2], "host", 5)
-		|| !ft_strncmp(argv[2], "client", 7))
+		|| !ft_strncmp(argv[2], "client", 7)
+		|| !ft_strncmp(argv[2], "--save", 7))
 			return ;
 		else
 			ft_throwerror("Invalid second argument");
@@ -71,19 +72,19 @@ int		main(int argc, char **argv)
 	checkargs(argc, argv);
 	if (argc > 2 && !ft_strncmp(argv[2], "host", 5))
 	{
-		if (argc != 4)
-			ft_throwerror("Missing port");
+		argc != 4 ? ft_throwerror("Missing port") : 0;
 		a->port = ft_atoi(argv[3]);
 		createserver(a);
 	}
 	if (argc > 2 && !ft_strncmp(argv[2], "client", 7))
 	{
-		if (argc != 5)
-			ft_throwerror("Missing ip or port (ip first)");
+		argc != 5 ? ft_throwerror("Missing ip or port (ip first)") : 0;
 		a->port = ft_atoi(argv[4]);
 		a->ip = argv[3];
 		connectserver(a);
 	}
+	playsound(a, "afplay ./sound/music.wav");
+	argc > 2 && !ft_strncmp(argv[2], "--save", 7) ? a->screen = 20 : 0;
 	get_map(a, argv[1]);
 	mapl = a->map;
 	set_default(a);

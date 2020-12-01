@@ -1,15 +1,15 @@
 R 750 750
-NO ./textures/brick
-SO ./textures/brick
-EA ./textures/brick
-WE ./textures/brick
+NO ./textures/bricks
+SO ./textures/bricks
+EA    ./textures/bricks
+WE ./textures/bricks
 S ./textures/st1
 FL ./textures/cobble
 EG ./textures/eog
-
+NG ./textures/animetyan
 C 30,  30, 30
 
-NEXTLEVEL ./maps/lvl4.cub
+NEXTLEVEL ./maps/lvl1.cub
 
 
 

@@ -6,7 +6,7 @@
 /*   By: hleilani <hleilani@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/11/13 18:01:11 by hleilani          #+#    #+#             */
-/*   Updated: 2020/11/30 20:05:53 by hleilani         ###   ########.fr       */
+/*   Updated: 2020/12/01 17:00:08 by hleilani         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -197,6 +197,7 @@ typedef struct	s_sprtedraw
 
 typedef struct	s_all
 {
+	int			screen;
 	t_sprtedraw	s;
 	int			nextlvltriger;
 	int			ismultiplayer;
@@ -300,5 +301,7 @@ void			ft_findrange(t_all *a);
 void			ft_fill_drawparametrs(t_all *a);
 void			sortsprites(t_all *a);
 void			updatedefaulttextures(t_all *a);
+void			takescreenshot(t_all *a);
+void			playsound(t_all *a, char *command);
 
 #endif

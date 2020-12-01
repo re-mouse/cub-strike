@@ -6,7 +6,7 @@
 /*   By: hleilani <hleilani@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/11/30 19:26:58 by hleilani          #+#    #+#             */
-/*   Updated: 2020/11/30 19:27:04 by hleilani         ###   ########.fr       */
+/*   Updated: 2020/12/01 17:04:07 by hleilani         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,6 +19,7 @@ void	checkwhocandie(t_all *a)
 	i = -1;
 	if (a->pl.shootcd <= 0)
 	{
+		playsound(a, "afplay ./sound/shoot.wav");
 		while (++i < a->numsprites)
 			if (a->sprites[i].candie == 1 && a->sprites[i].spritestate < 7)
 			{
@@ -46,6 +47,7 @@ void	checkcooldown(t_all *a, int i)
 	{
 		a->sprites[i].shootcd = 2;
 		a->sprites[i].spritestate = 6;
+		playsound(a, "afplay ./sound/shoot.wav");
 		a->pl.health -= 5;
 		checkplhp(a);
 	}

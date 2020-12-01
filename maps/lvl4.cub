@@ -6,7 +6,7 @@ WE ./textures/wood
 S ./textures/st1
 FL ./textures/cobblest
 EG ./textures/eog
-
+NG ./textures/animetyan
 C 30,  30, 30
 
 NEXTLEVEL ./maps/lvl7.cub

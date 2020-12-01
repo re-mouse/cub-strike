@@ -6,7 +6,7 @@
 /*   By: hleilani <hleilani@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/11/29 14:51:09 by hleilani          #+#    #+#             */
-/*   Updated: 2020/11/30 20:19:43 by hleilani         ###   ########.fr       */
+/*   Updated: 2020/12/01 17:00:54 by hleilani         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,6 +48,7 @@ void	getnextlevel(t_all *a, int send)
 	temp = a->nextmap;
 	get_map(a, a->nextmap);
 	updatedefaulttextures(a);
+	playsound(a, "afplay ./sound/nextlvl.wav");
 	a->mp.x = a->pl.psx;
 	a->mp.y = a->pl.psy;
 	free(temp);
