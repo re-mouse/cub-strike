@@ -6,7 +6,7 @@
 /*   By: hleilani <hleilani@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/11/29 14:51:09 by hleilani          #+#    #+#             */
-/*   Updated: 2020/12/01 17:17:21 by hleilani         ###   ########.fr       */
+/*   Updated: 2020/12/01 17:21:14 by hleilani         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,7 +47,7 @@ void	getnextlevel(t_all *a, int send)
 	freedata(a);
 	temp = a->nextmap;
 	get_map(a, a->nextmap);
-	//updatedefaulttextures(a);
+	updatedefaulttextures(a);
 	a->mp.x = a->pl.psx;
 	a->mp.y = a->pl.psy;
 	free(temp);
