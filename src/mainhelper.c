@@ -6,7 +6,7 @@
 /*   By: hleilani <hleilani@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/11/29 14:51:09 by hleilani          #+#    #+#             */
-/*   Updated: 2020/12/01 17:21:14 by hleilani         ###   ########.fr       */
+/*   Updated: 2020/12/01 17:23:08 by hleilani         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,6 +41,8 @@ void	getnextlevel(t_all *a, int send)
 		a->nextlvltriger = 0;
 	if (a->nextmap == NULL)
 	{
+		a->nextlvltriger = 1;
+		sendpacket(a);
 		ft_putendl_fd("You won 🥳!", 1);
 		exit(0);
 	}
