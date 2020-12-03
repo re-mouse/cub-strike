@@ -22,7 +22,7 @@ for example:
 
 ./cubstrike3D maps/startgame.cub host 5600
 
-./cubstrike3D maps/startgame.cub client 10.21.33.146 5600\
+./cubstrike3D maps/startgame.cub client 10.21.33.146 5600
 
 
 if u in 1 network, u should open network in macos 
