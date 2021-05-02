@@ -1,4 +1,5 @@
 # cub-strike
+
 3D Shooter on pure C language, based on raycasting
 
 ![](Screenshot.png "")
